@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>APP PATCHER</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>APP PATCHER</h1>
+
+    <div id="add-app-form">
+        <h2>Add New App</h2>
+        <input type="text" id="app-name-input" placeholder="Application Name">
+        <input type="text" id="install-url-input" placeholder="Installation Script URL">
+        <input type="text" id="uninstall-url-input" placeholder="Uninstallation Script URL">
+        <button id="add-app-button">Add App</button>
+    </div>
+
+    <div class="security-warning">
+        <p><strong>Security Warning:</strong> This application executes scripts from the internet. Only add and run scripts from sources you trust. Running malicious scripts can harm your computer.</p>
+    </div>
+
+    <div class="app-list">
+    </div>
+
+    <div id="status-container">
+        <h2>Status</h2>
+        <pre id="status"></pre>
+    </div>
+
+    <script src="./renderer.js"></script>
+</body>
+</html>
