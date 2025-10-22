@@ -1,0 +1,21 @@
+{
+  "name": "FoodDealSniper",
+  "context": "..",
+  "dockerFile": "../Dockerfile",
+  "remoteUser": "node",
+  "postCreateCommand": "corepack enable && pnpm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
+    }
+  },
+  "forwardPorts": [4000, 5173]
+}
