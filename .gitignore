@@ -17,3 +17,5 @@ pnpm-debug.log*
 dist
 packages/backend/dist
 packages/frontend/dist
+packages/backend/logs
+packages/backend/data

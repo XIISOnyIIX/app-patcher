@@ -36,7 +36,27 @@ pnpm dev:backend
 pnpm dev:frontend
 ```
 
-The backend boots on [http://localhost:4000](http://localhost:4000) and currently exposes a health-check endpoint. The frontend runs on [http://localhost:5173](http://localhost:5173) and demonstrates Tailwind CSS + DaisyUI wiring with a simple live deals dashboard.
+The backend boots on [http://localhost:4000](http://localhost:4000) and exposes REST API endpoints for coupons and ingestion management. The frontend runs on [http://localhost:5173](http://localhost:5173) and demonstrates Tailwind CSS + DaisyUI wiring with a simple live deals dashboard.
+
+### Coupon Ingestion Pipeline
+
+The backend includes a fully-featured coupon scraping and ingestion system. See [packages/backend/INGESTION.md](packages/backend/INGESTION.md) for complete documentation.
+
+Key features:
+
+- **Modular provider system** – easily add new food delivery vendors
+- **Scheduled refreshes** – automatic coupon updates via node-cron
+- **Rate limiting** – ethical scraping with configurable limits per provider
+- **Smart fetching** – HTTP/Cheerio with Playwright fallback for JS-heavy sites
+- **Health monitoring** – track ingestion success rates and provider status
+- **RESTful API** – endpoints for coupons, metrics, and manual triggers
+
+Available API endpoints:
+
+- `GET /api/coupons` – retrieve coupons with filtering
+- `GET /api/ingestion/health` – system health and provider status
+- `POST /api/ingestion/run` – trigger manual ingestion
+- See [INGESTION.md](packages/backend/INGESTION.md) for full API documentation
 
 ### Scripts
 
@@ -64,10 +84,32 @@ For a reproducible environment you can rely on either Docker or VS Code devconta
 - **Docker** – `docker compose up --build` will create a single container using the root `Dockerfile`, install dependencies with pnpm, and start both backend and frontend services.
 - **Devcontainer** – open the repository in VS Code and choose **“Reopen in Container”**. The `.devcontainer/devcontainer.json` file configures the same Dockerfile, installs dependencies, and exposes ports 4000 & 5173.
 
+## Architecture
+
+### Backend (`packages/backend`)
+
+The backend is built with Express and TypeScript, featuring:
+
+- **REST API** – endpoints for coupons, ingestion management, and health monitoring
+- **Coupon Ingestion Pipeline** – automated scraping system with provider adapters
+- **Storage** – JSON-based persistence (easily upgradeable to database)
+- **Logging** – Winston-based structured logging with file rotation
+- **Metrics** – track ingestion performance and provider health
+
+### Frontend (`packages/frontend`)
+
+React + TypeScript + Vite application with:
+
+- **Tailwind CSS + DaisyUI** – pre-configured component library
+- **Live Dashboard** – display food delivery deals and coupons
+- **Modern Build** – Vite for fast development and optimized production builds
+
 ## Next steps
 
-- Flesh out backend routing, persistence, and deal ingestion.
-- Connect the frontend dashboard to the API endpoints.
-- Expand automated tests in both packages.
+- Connect the frontend dashboard to the coupon API endpoints
+- Add database support (PostgreSQL/MongoDB) for scalable storage
+- Implement user authentication and saved preferences
+- Expand automated tests in both packages
+- Add more provider implementations
 
 Happy hacking!
