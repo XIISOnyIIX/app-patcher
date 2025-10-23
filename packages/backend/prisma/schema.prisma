@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Vendor {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  logoUrl     String?
+  website     String?
+  category    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  deals       Deal[]
+  coupons     Coupon[]
+
+  @@map("vendors")
+}
+
+model Deal {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  originalPrice Float?
+  discountedPrice Float
+  discountPercentage Float?
+  imageUrl    String?
+  startDate   DateTime @default(now())
+  endDate     DateTime?
+  isActive    Boolean  @default(true)
+  
+  vendorId    String
+  vendor      Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("deals")
+  @@index([vendorId])
+  @@index([isActive])
+  @@index([startDate])
+  @@index([endDate])
+}
+
+model Coupon {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  title       String
+  description String
+  discountType String  // 'percentage' or 'fixed'
+  discountValue Float
+  minPurchase Float?
+  maxDiscount Float?
+  startDate   DateTime @default(now())
+  endDate     DateTime?
+  usageLimit  Int?
+  usageCount  Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  vendorId    String
+  vendor      Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coupons")
+  @@index([vendorId])
+  @@index([isActive])
+  @@index([code])
+}
+
+model UserPreference {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  favoriteVendors       String?  // JSON array of vendor IDs
+  preferredCategories   String?  // JSON array of categories
+  maxPrice              Float?
+  minDiscount           Float?
+  emailNotifications    Boolean  @default(true)
+  pushNotifications     Boolean  @default(true)
+  notificationFrequency String   @default("daily") // 'instant', 'daily', 'weekly'
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("user_preferences")
+}

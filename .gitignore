@@ -8,6 +8,7 @@ yarn-error.log*
 .pnpm-store
 .env
 .env.*
+!.env.example
 coverage
 .vscode
 .idea
@@ -17,3 +18,6 @@ pnpm-debug.log*
 dist
 packages/backend/dist
 packages/frontend/dist
+packages/backend/dev.db
+packages/backend/dev.db-journal
+packages/backend/src/generated
