@@ -36,7 +36,7 @@ pnpm dev:backend
 pnpm dev:frontend
 ```
 
-The backend boots on [http://localhost:4000](http://localhost:4000) and currently exposes a health-check endpoint. The frontend runs on [http://localhost:5173](http://localhost:5173) and demonstrates Tailwind CSS + DaisyUI wiring with a simple live deals dashboard.
+The backend boots on [http://localhost:4000](http://localhost:4000) and exposes a REST API for deals, filters, user preferences, and saved searches, plus Server-Sent Events (SSE) for live deal notifications. The frontend runs on [http://localhost:5173](http://localhost:5173) and provides a full-featured UI with advanced search, filtering, sorting, live alerts, user preferences, and saved searches.
 
 ### Scripts
 
@@ -48,6 +48,8 @@ Common scripts are defined at the package level and can be run from the repo roo
 | `pnpm lint`                                  | Runs ESLint with the shared configuration across all packages. |
 | `pnpm format`                                | Formats source files with Prettier in each package.            |
 | `pnpm test`                                  | Invokes the `test` script for every workspace package.         |
+| `pnpm test:e2e`                              | Runs Playwright end-to-end tests covering all user journeys.   |
+| `pnpm test:e2e:ui`                           | Runs Playwright tests in interactive UI mode.                  |
 | `pnpm --filter @fooddealsniper/backend lint` | Example of targeting a specific package.                       |
 
 ### Tooling highlights
@@ -64,10 +66,43 @@ For a reproducible environment you can rely on either Docker or VS Code devconta
 - **Docker** – `docker compose up --build` will create a single container using the root `Dockerfile`, install dependencies with pnpm, and start both backend and frontend services.
 - **Devcontainer** – open the repository in VS Code and choose **“Reopen in Container”**. The `.devcontainer/devcontainer.json` file configures the same Dockerfile, installs dependencies, and exposes ports 4000 & 5173.
 
+## Features
+
+### Backend API
+
+- **Deals API** (`/api/deals`) – Search, filter, and sort deals with support for text search, tags, cuisine, vendor, discount range, and expiration filters
+- **Filter metadata** – Endpoints for available cuisines, vendors, and tags
+- **User preferences** – Store and retrieve user notification preferences, preferred cuisines, and alert channels
+- **Saved searches** – Save, retrieve, and delete search configurations
+- **Live notifications** – Server-Sent Events (SSE) endpoint (`/api/events`) for real-time deal alerts
+
+### Frontend Features
+
+- **Advanced search** – Full-text search with tag support
+- **Multi-faceted filtering** – Filter by cuisine, vendor, discount range, and expiration
+- **Flexible sorting** – Sort by discount, expiration date, creation date, or title
+- **Live alerts** – Real-time toast notifications for new deals using SSE
+- **User preferences** – Modal for managing notification settings, preferred cuisines, discount thresholds, and alert channels
+- **Saved searches** – Save, load, and delete search configurations with optional auto-notifications
+- **Responsive UI** – Built with Tailwind CSS and DaisyUI for a modern, accessible interface
+
+### End-to-End Tests
+
+Comprehensive Playwright test suite covering:
+
+- Search and filter functionality
+- Saved searches workflow
+- User preferences management
+- Live alert system
+- Complete user journeys from discovery to tracking
+
+See `e2e/README.md` for detailed test documentation.
+
 ## Next steps
 
-- Flesh out backend routing, persistence, and deal ingestion.
-- Connect the frontend dashboard to the API endpoints.
-- Expand automated tests in both packages.
+- Implement backend persistence (database)
+- Add user authentication and authorization
+- Integrate with real deal sources/scrapers
+- Deploy to production environment
 
 Happy hacking!

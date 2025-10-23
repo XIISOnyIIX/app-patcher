@@ -11,10 +11,13 @@
     "format": "pnpm -r format",
     "lint": "pnpm -r lint",
     "test": "pnpm -r test",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "lint-staged": "lint-staged",
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "eslint": "^8.51.0",
@@ -25,6 +28,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
+    "playwright": "^1.56.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   }
