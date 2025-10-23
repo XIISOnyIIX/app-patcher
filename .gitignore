@@ -17,3 +17,8 @@ pnpm-debug.log*
 dist
 packages/backend/dist
 packages/frontend/dist
+
+# Playwright
+/playwright-report/
+/playwright/.cache/
+/test-results/
