@@ -98,11 +98,97 @@ Comprehensive Playwright test suite covering:
 
 See `e2e/README.md` for detailed test documentation.
 
+## CI/CD & Deployment
+
+### Continuous Integration
+
+GitHub Actions workflows automatically run on pull requests and pushes:
+
+- **Linting & Formatting** – ESLint and Prettier checks
+- **Type Checking** – TypeScript compilation validation
+- **Unit Tests** – Jest (backend) and Vitest (frontend)
+- **E2E Tests** – Playwright integration tests
+- **Build** – Production build verification
+- **Docker** – Container image builds
+
+See `.github/workflows/` for workflow definitions.
+
+### Docker Deployment
+
+**Development:**
+
+```bash
+docker-compose up --build
+```
+
+**Production:**
+
+```bash
+docker-compose -f docker-compose.production.yml up -d
+```
+
+See `Dockerfile.production` for optimized multi-stage builds.
+
+### Environment Configuration
+
+Copy `.env.example` to `.env` and configure:
+
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+See `docs/ENVIRONMENT.md` for detailed environment variable documentation.
+
+### Deployment Documentation
+
+- **[Environment Variables & Secrets](docs/ENVIRONMENT.md)** - Comprehensive guide to configuration and secrets management
+- **[Scraper Deployment](docs/SCRAPER_DEPLOYMENT.md)** - Web scraping best practices, rate limiting, and proxy configuration
+- **[Deployment Guide](docs/DEPLOYMENT.md)** - Deploy to AWS, GCP, Azure, Heroku, Kubernetes, and more
+
+### Seed Data
+
+Test fixtures available in `fixtures/` directory:
+
+- `deals.json` - Sample food deals
+- `user-preferences.json` - Sample user preferences
+
+See `fixtures/README.md` for usage instructions.
+
+## Testing
+
+### Unit Tests
+
+```bash
+# Run all tests
+pnpm test
+
+# Backend tests only
+pnpm --filter @fooddealsniper/backend test
+
+# Frontend tests only
+pnpm --filter @fooddealsniper/frontend test
+
+# With coverage
+pnpm --filter @fooddealsniper/backend test:coverage
+```
+
+### End-to-End Tests
+
+```bash
+# Run E2E tests
+pnpm test:e2e
+
+# Interactive mode
+pnpm test:e2e:ui
+```
+
 ## Next steps
 
 - Implement backend persistence (database)
 - Add user authentication and authorization
 - Integrate with real deal sources/scrapers
-- Deploy to production environment
+- Set up monitoring and alerting
+- Configure CDN for frontend assets
 
 Happy hacking!

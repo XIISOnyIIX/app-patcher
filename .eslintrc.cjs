@@ -73,7 +73,7 @@ module.exports = {
       }
     },
     {
-      files: ['packages/frontend/vite.config.ts'],
+      files: ['packages/frontend/vite.config.ts', 'packages/frontend/vitest.config.ts'],
       env: {
         node: true
       },
@@ -81,6 +81,18 @@ module.exports = {
         project: ['./packages/frontend/tsconfig.node.json'],
         tsconfigRootDir: __dirname,
         sourceType: 'module'
+      }
+    },
+    {
+      files: ['**/*.config.js', '**/*.config.cjs'],
+      env: {
+        node: true
+      },
+      parserOptions: {
+        sourceType: 'script'
+      },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off'
       }
     }
   ]
