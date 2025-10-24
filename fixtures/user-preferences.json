@@ -1,0 +1,35 @@
+[
+  {
+    "userId": "user-1",
+    "notificationsEnabled": true,
+    "preferredCuisines": ["Japanese", "Italian"],
+    "minDiscountThreshold": 20,
+    "alertChannels": {
+      "email": true,
+      "push": true,
+      "inApp": true
+    }
+  },
+  {
+    "userId": "user-2",
+    "notificationsEnabled": true,
+    "preferredCuisines": ["Mexican", "American"],
+    "minDiscountThreshold": 30,
+    "alertChannels": {
+      "email": false,
+      "push": true,
+      "inApp": true
+    }
+  },
+  {
+    "userId": "user-3",
+    "notificationsEnabled": false,
+    "preferredCuisines": [],
+    "minDiscountThreshold": 10,
+    "alertChannels": {
+      "email": false,
+      "push": false,
+      "inApp": true
+    }
+  }
+]

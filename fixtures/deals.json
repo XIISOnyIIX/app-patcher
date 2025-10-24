@@ -1,0 +1,167 @@
+[
+  {
+    "id": "deal-1",
+    "title": "Half-price Sushi Platters",
+    "description": "Tonight only at Sakura Downtown — online orders get 50% off family packs.",
+    "cuisine": "Japanese",
+    "vendor": "Sakura Downtown",
+    "discount": 50,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["sushi", "dinner", "family"],
+    "createdAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "id": "deal-2",
+    "title": "Free Delivery On Breakfast Orders",
+    "description": "Skip the queue! Early bird delivery is free when you order before 9am.",
+    "cuisine": "American",
+    "vendor": "Morning Cafe",
+    "discount": 100,
+    "expiresAt": "2024-12-31T09:00:00Z",
+    "tags": ["breakfast", "delivery", "morning"],
+    "createdAt": "2024-01-15T06:00:00Z"
+  },
+  {
+    "id": "deal-3",
+    "title": "30% Off All Pizzas",
+    "description": "Use code PIZZA30 for any large or XL pizza",
+    "cuisine": "Italian",
+    "vendor": "Pizza Palace",
+    "discount": 30,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["pizza", "italian", "lunch", "dinner"],
+    "createdAt": "2024-01-14T12:00:00Z"
+  },
+  {
+    "id": "deal-4",
+    "title": "Buy One Get One Free Tacos",
+    "description": "Every Tuesday! BOGO on all taco varieties",
+    "cuisine": "Mexican",
+    "vendor": "Taco Time",
+    "discount": 50,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["tacos", "mexican", "bogo"],
+    "createdAt": "2024-01-13T14:00:00Z"
+  },
+  {
+    "id": "deal-5",
+    "title": "20% Off Chinese Feast",
+    "description": "Get 20% off orders over $40 at Golden Dragon",
+    "cuisine": "Chinese",
+    "vendor": "Golden Dragon",
+    "discount": 20,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["chinese", "family", "dinner"],
+    "createdAt": "2024-01-12T16:00:00Z"
+  },
+  {
+    "id": "deal-6",
+    "title": "Free Appetizer with Entree",
+    "description": "Choose any appetizer free when you order an entree",
+    "cuisine": "American",
+    "vendor": "Grill House",
+    "discount": 25,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["appetizer", "free", "dinner"],
+    "createdAt": "2024-01-11T18:00:00Z"
+  },
+  {
+    "id": "deal-7",
+    "title": "Lunch Special: $5 Subs",
+    "description": "All 6-inch subs only $5 from 11am-2pm",
+    "cuisine": "American",
+    "vendor": "Sub Station",
+    "discount": 40,
+    "expiresAt": "2024-12-31T14:00:00Z",
+    "tags": ["lunch", "sandwich", "special"],
+    "createdAt": "2024-01-10T09:00:00Z"
+  },
+  {
+    "id": "deal-8",
+    "title": "Family Meal Deal: $35",
+    "description": "Feed 4 people for just $35 - includes 2 large pizzas and 4 drinks",
+    "cuisine": "Italian",
+    "vendor": "Pizza Palace",
+    "discount": 35,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["family", "pizza", "meal-deal"],
+    "createdAt": "2024-01-09T15:00:00Z"
+  },
+  {
+    "id": "deal-9",
+    "title": "Happy Hour: 50% Off Appetizers",
+    "description": "All appetizers half price 4-6pm daily",
+    "cuisine": "American",
+    "vendor": "Sports Bar & Grill",
+    "discount": 50,
+    "expiresAt": "2024-12-31T18:00:00Z",
+    "tags": ["happy-hour", "appetizer", "drinks"],
+    "createdAt": "2024-01-08T12:00:00Z"
+  },
+  {
+    "id": "deal-10",
+    "title": "Weekend Brunch Special",
+    "description": "Bottomless mimosas and buffet brunch for $25",
+    "cuisine": "American",
+    "vendor": "Brunch House",
+    "discount": 30,
+    "expiresAt": "2024-12-31T15:00:00Z",
+    "tags": ["brunch", "weekend", "buffet", "drinks"],
+    "createdAt": "2024-01-07T08:00:00Z"
+  },
+  {
+    "id": "deal-11",
+    "title": "Ramen Night Special",
+    "description": "Buy one ramen bowl, get second 50% off",
+    "cuisine": "Japanese",
+    "vendor": "Ramen House",
+    "discount": 25,
+    "expiresAt": "2024-12-31T22:00:00Z",
+    "tags": ["ramen", "dinner", "asian"],
+    "createdAt": "2024-01-06T16:00:00Z"
+  },
+  {
+    "id": "deal-12",
+    "title": "Taco Tuesday: $2 Tacos",
+    "description": "Every Tuesday - all tacos just $2 each",
+    "cuisine": "Mexican",
+    "vendor": "Taco Time",
+    "discount": 60,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["tacos", "tuesday", "special"],
+    "createdAt": "2024-01-05T10:00:00Z"
+  },
+  {
+    "id": "deal-13",
+    "title": "Student Discount: 15% Off",
+    "description": "Show your student ID for 15% off entire order",
+    "cuisine": "American",
+    "vendor": "Campus Cafe",
+    "discount": 15,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["student", "discount", "all-day"],
+    "createdAt": "2024-01-04T11:00:00Z"
+  },
+  {
+    "id": "deal-14",
+    "title": "Late Night Special",
+    "description": "25% off all orders after 10pm",
+    "cuisine": "Various",
+    "vendor": "24/7 Diner",
+    "discount": 25,
+    "expiresAt": "2024-12-31T02:00:00Z",
+    "tags": ["late-night", "discount"],
+    "createdAt": "2024-01-03T22:00:00Z"
+  },
+  {
+    "id": "deal-15",
+    "title": "Burger & Fries Combo",
+    "description": "Classic burger with fries for just $7.99",
+    "cuisine": "American",
+    "vendor": "Burger Joint",
+    "discount": 30,
+    "expiresAt": "2024-12-31T23:59:59Z",
+    "tags": ["burger", "combo", "lunch", "dinner"],
+    "createdAt": "2024-01-02T13:00:00Z"
+  }
+]
