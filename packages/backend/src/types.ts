@@ -47,3 +47,34 @@ export interface SavedSearch {
   createdAt: Date;
   notifyOnNewMatches: boolean;
 }
+
+export interface AlertSubscription {
+  id: string;
+  userId: string;
+  filters?: SearchFilters;
+  alertOnNewDeals: boolean;
+  alertOnExpiring: boolean;
+  expiringThresholdHours: number;
+  frequency: 'instant' | 'hourly' | 'daily';
+  isActive: boolean;
+  createdAt: Date;
+  lastAlertAt?: Date;
+}
+
+export interface AlertHistory {
+  id: string;
+  userId: string;
+  dealId: string;
+  alertType: 'new-deal' | 'expiring-deal' | 'price-drop';
+  message: string;
+  createdAt: Date;
+  read: boolean;
+  deliveredVia: string[];
+}
+
+export interface NotificationEvent {
+  type: 'new-deal' | 'deal-expiring' | 'alert-history';
+  deal?: Deal;
+  alert?: AlertHistory;
+  message?: string;
+}

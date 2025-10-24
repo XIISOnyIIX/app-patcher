@@ -4,8 +4,16 @@ import express, { Request, Response } from 'express';
 
 import { dataStore } from './data-store';
 import { dealService } from './deal-service';
+import { notificationService } from './notification-service';
 import { sseService } from './sse-service';
-import { SearchFilters, SortOptions, UserPreferences, SavedSearch, Deal } from './types';
+import {
+  SearchFilters,
+  SortOptions,
+  UserPreferences,
+  SavedSearch,
+  Deal,
+  AlertSubscription,
+} from './types';
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);
@@ -75,7 +83,8 @@ app.get('/api/events', (req: Request, res: Response) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders();
 
-  sseService.addClient(res);
+  const userId = req.query.userId as string | undefined;
+  sseService.addClient(res, userId);
 
   res.write(
     `data: ${JSON.stringify({ type: 'connected', message: 'Connected to deal alerts' })}\n\n`,
@@ -127,6 +136,128 @@ app.delete('/api/saved-searches/:userId/:searchId', (req: Request, res: Response
   res.json({ success: deleted });
 });
 
+app.get('/api/subscriptions/:userId', (req: Request, res: Response) => {
+  const subscriptions = dataStore.getSubscriptions(req.params.userId);
+  res.json({ subscriptions });
+});
+
+app.post('/api/subscriptions', (req: Request, res: Response) => {
+  const subscription: AlertSubscription = {
+    ...req.body,
+    id: `sub-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    createdAt: new Date(),
+  };
+  const saved = dataStore.addSubscription(subscription);
+  res.json({ success: true, subscription: saved });
+});
+
+app.patch('/api/subscriptions/:userId/:subscriptionId', (req: Request, res: Response) => {
+  const updated = dataStore.updateSubscription(
+    req.params.userId,
+    req.params.subscriptionId,
+    req.body,
+  );
+  if (!updated) {
+    return res.status(404).json({ success: false, message: 'Subscription not found' });
+  }
+  res.json({ success: true, subscription: updated });
+});
+
+app.delete('/api/subscriptions/:userId/:subscriptionId', (req: Request, res: Response) => {
+  const deleted = dataStore.deleteSubscription(req.params.userId, req.params.subscriptionId);
+  res.json({ success: deleted });
+});
+
+app.get('/api/alerts/:userId', (req: Request, res: Response) => {
+  const limit = req.query.limit ? Number(req.query.limit) : undefined;
+  const alerts = dataStore.getAlertHistory(req.params.userId, limit);
+  const unreadCount = dataStore.getUnreadAlertCount(req.params.userId);
+  res.json({ alerts, unreadCount });
+});
+
+app.patch('/api/alerts/:userId/:alertId/read', (req: Request, res: Response) => {
+  const marked = dataStore.markAlertAsRead(req.params.userId, req.params.alertId);
+  res.json({ success: marked });
+});
+
+app.post('/api/alerts/:userId/mark-all-read', (req: Request, res: Response) => {
+  const count = dataStore.markAllAlertsAsRead(req.params.userId);
+  res.json({ success: true, count });
+});
+
+function processNewDeal(deal: Deal): void {
+  dataStore.addDeal(deal);
+
+  const allSubscriptions = dataStore.getAllSubscriptions();
+  allSubscriptions.forEach((subscription) => {
+    if (notificationService.shouldAlertUser(subscription, deal, 'new-deal')) {
+      const alert = dataStore.addAlertHistory({
+        id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        userId: subscription.userId,
+        dealId: deal.id,
+        alertType: 'new-deal',
+        message: `New deal: ${deal.title} - ${deal.discount}% off`,
+        createdAt: new Date(),
+        read: false,
+        deliveredVia: subscription.isActive ? ['in-app'] : [],
+      });
+
+      sseService.broadcastNewDeal(deal, subscription.userId);
+      sseService.broadcastAlertHistory(alert);
+
+      if (subscription.frequency === 'instant') {
+        dataStore.updateSubscription(subscription.userId, subscription.id, {
+          lastAlertAt: new Date(),
+        });
+      }
+    }
+  });
+}
+
+function checkExpiringDeals(): void {
+  const deals = dataStore.getDeals();
+  const allSubscriptions = dataStore.getAllSubscriptions();
+
+  allSubscriptions.forEach((subscription) => {
+    if (!subscription.alertOnExpiring || !subscription.isActive) return;
+
+    const expiringDeals = notificationService.checkExpiringDeals(
+      deals,
+      subscription.expiringThresholdHours,
+    );
+
+    expiringDeals.forEach((deal) => {
+      if (notificationService.shouldAlertUser(subscription, deal, 'expiring-deal')) {
+        const existingAlert = dataStore
+          .getAlertHistory(subscription.userId)
+          .find((a) => a.dealId === deal.id && a.alertType === 'expiring-deal');
+
+        if (!existingAlert) {
+          const alert = dataStore.addAlertHistory({
+            id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            userId: subscription.userId,
+            dealId: deal.id,
+            alertType: 'expiring-deal',
+            message: `Deal expiring soon: ${deal.title} - expires at ${deal.expiresAt.toLocaleString()}`,
+            createdAt: new Date(),
+            read: false,
+            deliveredVia: ['in-app'],
+          });
+
+          sseService.broadcastDealExpiring(deal, subscription.userId);
+          sseService.broadcastAlertHistory(alert);
+
+          if (subscription.frequency === 'instant') {
+            dataStore.updateSubscription(subscription.userId, subscription.id, {
+              lastAlertAt: new Date(),
+            });
+          }
+        }
+      }
+    });
+  });
+}
+
 setInterval(() => {
   if (Math.random() > 0.7) {
     const now = new Date();
@@ -141,10 +272,13 @@ setInterval(() => {
       tags: ['flash', 'limited'],
       createdAt: now,
     };
-    dataStore.addDeal(randomDeal);
-    sseService.broadcastNewDeal(randomDeal);
+    processNewDeal(randomDeal);
   }
 }, 30000);
+
+setInterval(() => {
+  checkExpiringDeals();
+}, 5 * 60 * 1000);
 
 app.listen(port, () => {
   console.log(`✅ FoodDealSniper API listening on http://localhost:${port}`);
